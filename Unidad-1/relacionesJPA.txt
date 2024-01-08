@@ -1,0 +1,37 @@
+/*
+Relación OneToOne:
+
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "id de tabla a la que va")
+    private "clase del id" "clase del id";
+
+    @OneToOne(mappedBy = "nombreClaseActual", cascade = CascadeType.ALL)
+    private "otraClase" "otraClase";
+
+ */
+
+/*
+Relación OneToMany:
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "nombreClaseActual", cascade = CascadeType.ALL)
+    private Set<"nombreClaseSiguiente"> "nombreClaseSiguiente" + Set = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id clase a la que vamos")
+    private "clase a la que vamos" "clase a la que vamos";
+
+ */
+
+/*
+Relacion ManyToMany
+
+    @ManyToMany(mappedBy = "nombreClaseActual" + Set")
+    Set<"nombre clase a la que vamos"> "nombre de clase a la que vamos" + Set;
+
+    @ManyToMany
+    @JoinTable(name = "nombre de tabla intermedia que se creará",
+            joinColumns = @JoinColumn(name = "id clase actual"),
+            inverseJoinColumns = @JoinColumn(name = "id clase siguiente"))
+    Set<"nombre clase siguiente"> "nombre clase siguiente" + Set = new HashSet<>();
+
+ */
