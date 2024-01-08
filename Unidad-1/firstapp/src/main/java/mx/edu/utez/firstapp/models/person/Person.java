@@ -1,9 +1,11 @@
 package mx.edu.utez.firstapp.models.person;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import mx.edu.utez.firstapp.models.user.User;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -38,6 +40,10 @@ public class Person {
 
     @Column(columnDefinition = "BOOL DEFAULT true")
     private boolean status;
+
+    @OneToOne(mappedBy = "person", cascade = CascadeType.PERSIST)
+    @JsonIgnoreProperties(value = {"person"})
+    private User user;
 
 
 }
