@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(length = 40, nullable = false)
     private String name;
 
@@ -36,7 +37,7 @@ public class Person {
     // Este es para ingresar directamente lenguaje SQL
     @Column(columnDefinition = "TIMESTAMP DEFAULT NOW()", insertable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime creatAdt;
+    private LocalDateTime createdAt;
 
     @Column(columnDefinition = "BOOL DEFAULT true")
     private boolean status;
