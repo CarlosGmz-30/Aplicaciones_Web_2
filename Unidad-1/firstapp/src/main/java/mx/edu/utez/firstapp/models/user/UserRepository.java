@@ -12,16 +12,11 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findFirstByUsername(String username);
 
-    /* Method queries
-    1. Buscar a todos los usuarios por medio del estado
-    2. Buscar a un usuario por medio del id de la persona
-    3. Buscar al usuario por medio del curp de la persona
-     */
-
+    // Buscar a todos los usuarios por medio del estado
     List<User> findAllByStatus(boolean status);
-
+    // Buscar a un usuario por medio del id de la persona
     Optional<User> findByPersonId(Long id);
-
+    // Buscar al usuario por medio del curp de la persona
     Optional<User> findByPersonCurp(String curp);
 
     @Query(value = "SELECT * FROM users u " +
