@@ -39,4 +39,12 @@ public class Person {
     @OneToOne(mappedBy = "person", cascade = CascadeType.PERSIST)
     @JsonIgnoreProperties(value = {"person"})
     private User user;
+
+    public Person(String name, String surname, String lastname, LocalDate birthdate, String curp) {
+        this.name = name;
+        this.surname = surname;
+        this.lastname = lastname;
+        this.birthdate = birthdate;
+        this.curp = curp;
+    }
 }
