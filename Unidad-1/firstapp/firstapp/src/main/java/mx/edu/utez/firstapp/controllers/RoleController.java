@@ -11,14 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/role")
 @CrossOrigin(origins = {"*"})
-public class RoleController  {
+public class RoleController {
     private final RoleService service;
+
     public RoleController(RoleService service) {
         this.service = service;
     }
 
     @GetMapping("/")
-    public ResponseEntity<ApiResponse> getAll(){
+    public ResponseEntity<ApiResponse> getAll() {
         return service.getAll();
     }
 }
