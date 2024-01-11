@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -26,7 +27,15 @@ public class PersonService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> save(Person person) {
-        return null;
+        Optional<Person> foundPerson = repository.findByCurp(person.getCurp());
+        if (foundPerson.isPresent()) {
+            return new ResponseEntity<>
+                    (new ApiResponse(HttpStatus.BAD_REQUEST,
+                            true, "RecordAlredyExist"), HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(new ApiResponse
+                    (repository.saveAndFlush(person), HttpStatus.OK), HttpStatus.OK);
+        }
     }
 
 }
