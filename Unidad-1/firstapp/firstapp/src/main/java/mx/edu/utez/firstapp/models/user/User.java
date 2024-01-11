@@ -19,23 +19,22 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true, nullable = false, length = 40)
+
+    @Column(length = 40, nullable = false, unique = true)
     private String username;
 
-    @Column(unique = true, nullable = false, length = 150)
+    @Column(length = 150, nullable = false, unique = true)
     private String password;
 
-    // Este es para ingresar directamente lenguaje SQL
     @Column(columnDefinition = "TIMESTAMP DEFAULT NOW()", insertable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime creatAdt;
+    private LocalDateTime createdAt;
 
     @Column(columnDefinition = "BOOL DEFAULT true")
-    private boolean status;
+    private Boolean status;
 
     @Column(columnDefinition = "BOOL DEFAULT false")
-    private boolean blocked;
-
+    private Boolean blocked;
     private String token;
 
     @ManyToMany(mappedBy = "users")
@@ -44,4 +43,5 @@ public class User {
     @OneToOne
     @JoinColumn(name = "person_id", unique = true)
     private Person person;
+
 }

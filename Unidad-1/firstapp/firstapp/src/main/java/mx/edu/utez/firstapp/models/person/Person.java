@@ -19,6 +19,7 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(length = 40, nullable = false)
     private String name;
 
@@ -29,22 +30,20 @@ public class Person {
     private String lastname;
 
     @Column(columnDefinition = "DATE", nullable = false)
-    private LocalDate birthdate;
+    private LocalDate birtdate;
 
     @Column(length = 18, nullable = false, unique = true)
     private String curp;
 
-    // Este es para ingresar directamente lenguaje SQL
     @Column(columnDefinition = "TIMESTAMP DEFAULT NOW()", insertable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdAt;
 
     @Column(columnDefinition = "BOOL DEFAULT true")
-    private boolean status;
+    private Boolean status;
 
     @OneToOne(mappedBy = "person", cascade = CascadeType.PERSIST)
     @JsonIgnoreProperties(value = {"person"})
     private User user;
-
 
 }

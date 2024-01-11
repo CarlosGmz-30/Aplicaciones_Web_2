@@ -12,18 +12,20 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findFirstByUsername(String username);
 
-    // Buscar a todos los usuarios por medio del estado
-    List<User> findAllByStatus(boolean status);
-    // Buscar a un usuario por medio del id de la persona
+    /*
+    1. Buscar a todos los usuarios por medio del status
+    2. Buscar a un usuario por medio del ID de la persona
+    3. Buscar al usuario por medio del curp de la persona
+     */
+    List<User> findAllByStatus(Boolean status);
+
     Optional<User> findByPersonId(Long id);
-    // Buscar al usuario por medio del curp de la persona
     Optional<User> findByPersonCurp(String curp);
 
-    @Query(value = "SELECT * FROM users u " +
-            "INNER JOIN people p ON u.person_id = p.id " +
-            "WHERE p.birth_date BETWEEN :fechaUno AND :fechaDos ",
+    @Query(value =
+            "SELECT * from users u INNER JOIN people p on u.person_id = p.id " +
+                    "where p.birthdate BETWEEN :fechaUno and :fechaDos",
             nativeQuery = true)
-    List<User> obtenerUsuariosPorFechasDeNacimiento(@Param("fechaUno") String startDate,
-                                                    @Param("fechaDos") String endDate);
-
+    List<User> getUser(@Param("fechaUno") String startDate,
+                                    @Param("fechaUno") String startEnd);
 }
