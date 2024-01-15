@@ -36,4 +36,13 @@ public class User {
     @OneToOne
     @JoinColumn(name = "person_id", unique = true)
     private Person person;
+
+    public User(String username, String password, Set<Role> roles) {
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+        this.status = true;
+        this.createdAt = LocalDateTime.now();
+        this.blocked = false;
+    }
 }

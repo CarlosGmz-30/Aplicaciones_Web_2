@@ -47,4 +47,15 @@ public class Person {
         this.birthdate = birthdate;
         this.curp = curp;
     }
+
+    public Person(String name, String surname, String lastname, LocalDate birthdate, String curp, User user) {
+        this.name = name;
+        this.surname = surname;
+        this.lastname = lastname;
+        this.birthdate = birthdate;
+        this.curp = curp;
+        this.user = user;
+        this.status = true;
+        this.createdAt = LocalDateTime.now();
+    }
 }

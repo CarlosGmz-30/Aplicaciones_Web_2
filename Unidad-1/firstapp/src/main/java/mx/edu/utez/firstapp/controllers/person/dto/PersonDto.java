@@ -3,6 +3,7 @@ package mx.edu.utez.firstapp.controllers.person.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import mx.edu.utez.firstapp.controllers.user.dto.UserDto;
 import mx.edu.utez.firstapp.models.person.Person;
 
 import java.time.LocalDate;
@@ -16,9 +17,13 @@ public class PersonDto {
     private String surname;
     private String lastname;
     private String curp;
-    private LocalDate birthdate;
+    private LocalDate birthDate;
+    private UserDto user;
 
     public Person toEntity() {
-        return new Person(name, surname, lastname, birthdate, curp);
+        if (user != null) {
+            return new Person(name, surname, lastname, birthDate, curp, user.toEntity());
+        }
+        return new Person(name, surname, lastname, birthDate, curp);
     }
 }
