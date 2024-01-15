@@ -8,6 +8,7 @@ import mx.edu.utez.firstapp.models.user.User;
 import mx.edu.utez.firstapp.models.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +55,8 @@ public class PersonService {
                             "RoleNotAttached"), HttpStatus.BAD_REQUEST);
                 }
             }
+        } else {
+            person = repository.saveAndFlush(person);
         }
         return new ResponseEntity<>(new ApiResponse
                 (person, HttpStatus.OK), HttpStatus.OK);
