@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane alignment="CENTER" hgap="20.0" vgap="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.edu.utez.fx5b.HelloController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <!--Columna Izquierda -->
+    <VBox spacing="20.0">
+        <VBox spacing="10.0">
+            <Label text="Name:" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="textField1" HBox.hgrow="ALWAYS"/>
+        </VBox>
+        <VBox spacing="10.0">
+            <Label text="Surname:" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="textField2" HBox.hgrow="ALWAYS"/>
+        </VBox>
+        <VBox spacing="10.0">
+            <Label text="Lastname:" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="textField3" HBox.hgrow="ALWAYS"/>
+        </VBox>
+        <VBox spacing="10.0">
+            <Label text="Age:" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="textField4" HBox.hgrow="ALWAYS"/>
+        </VBox>
+        <HBox spacing="10.0">
+            <Button onAction="#onInsertButtonClick" text="Insertar"
+                    style="-fx-background-color: #185093; -fx-text-fill: white; -fx-font-weight: bold;"/>
+            <Button onAction="#onUpdateButtonClick" text="Actualizar"
+                    style="-fx-background-color: #185093; -fx-text-fill: white; -fx-font-weight: bold;"/>
+            <Button onAction="#onDeleteButtonClick" text="Eliminar"
+                    style="-fx-background-color: #185093; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        </HBox>
+    </VBox>
+
+    <!-- Columna derecha -->
+    <TableView fx:id="tableView" GridPane.columnIndex="1">
+        <columns>
+            <TableColumn text="Name" fx:id="column1"/>
+            <TableColumn text="Surname" fx:id="column2"/>
+            <TableColumn text="Lastname" fx:id="column3"/>
+            <TableColumn text="Age" fx:id="column4"/>
+        </columns>
+    </TableView>
+</GridPane>
