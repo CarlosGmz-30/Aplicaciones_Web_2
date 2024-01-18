@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.security.SignatureException;
 import java.util.Date;
 
 @Service
@@ -73,5 +74,23 @@ public class JwtProvider {
             //.substring(TOKEN_TYPE.lenght());
             return bearToken.replace(TOKEN_TYPE, "");
         return null;
+    }
+
+    public boolean validateClaims(Claims claims, String token) {
+        try {
+            parseClaims(token);
+            return claims.getExpiration().after(new Date());
+        } catch (MalformedJwtException e) {
+            LOGGER.error("MalformedToken");
+        } catch (UnsupportedJwtException e) {
+            LOGGER.error("UnsupoertedToken");
+        } catch (ExpiredJwtException e) {
+            LOGGER.error("ExpiredToken");
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("BlankToken");
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+        }
+        return false;
     }
 }
