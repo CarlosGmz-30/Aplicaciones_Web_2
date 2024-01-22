@@ -8,6 +8,7 @@ import mx.edu.utez.firstapp.models.user.User;
 import mx.edu.utez.firstapp.models.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +22,12 @@ import java.util.Set;
 public class PersonService {
     private final PersonRepository repository;
     private final UserRepository userRepository;
+    private final PasswordEncoder encoder;
 
-    public PersonService(PersonRepository repository, UserRepository userRepository) {
+    public PersonService(PersonRepository repository, UserRepository userRepository, PasswordEncoder encoder) {
         this.repository = repository;
         this.userRepository = userRepository;
+        this.encoder = encoder;
     }
 
     @Transactional(readOnly = true)
@@ -36,11 +39,12 @@ public class PersonService {
     public ResponseEntity<ApiResponse> save(Person person) {
         Optional<Person> foundPerson = repository.findByCurp(person.getCurp());
         if (foundPerson.isPresent()) {
-            return new ResponseEntity<>
-                    (new ApiResponse(HttpStatus.BAD_REQUEST,
-                            true, "RecordAlredyExist"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "RecordAlredyExist"), HttpStatus.BAD_REQUEST);
         }
         if (person.getUser() != null) {
+            person.getUser().setPassword(
+                    encoder.encode(person.getUser().getPassword())
+            );
             person.getUser().setPerson(person);
             Optional<User> foundUser = userRepository.findFirstByUsername(person.getUser().getUsername());
             if (foundUser.isPresent())

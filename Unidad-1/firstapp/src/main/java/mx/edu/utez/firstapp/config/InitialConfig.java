@@ -1,8 +1,10 @@
 package mx.edu.utez.firstapp.config;
 
+import mx.edu.utez.firstapp.models.person.Person;
 import mx.edu.utez.firstapp.models.person.PersonRepository;
 import mx.edu.utez.firstapp.models.role.Role;
 import mx.edu.utez.firstapp.models.role.RoleRepository;
+import mx.edu.utez.firstapp.models.user.User;
 import mx.edu.utez.firstapp.models.user.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -30,11 +32,30 @@ public class InitialConfig implements CommandLineRunner {
         Role adminRole = getOrSaveRole(new Role("ADMIN_ROLE"));
         getOrSaveRole(new Role("USER_ROLE"));
         getOrSaveRole(new Role("CLIENT_ROLE"));
+        // Crear un usuario para que puedan iniciar sesión (person, user, user_role)
     }
 
     @Transactional
-    public Role getOrSaveRole(Role role){
+    public Role getOrSaveRole(Role role) {
         Optional<Role> foundRole = roleRepository.findByName(role.getName());
-        return foundRole.orElseGet(()->roleRepository.saveAndFlush(role));
+        return foundRole.orElseGet(() -> roleRepository.saveAndFlush(role));
+    }
+
+    @Transactional
+    public Person getOrSavePerson(Person person) {
+        Optional<Person> foundPerson = personRepository.findByCurp(person.getCurp());
+        return foundPerson.orElseGet(() -> personRepository.saveAndFlush(person));
+    }
+
+    @Transactional
+    public User getOrSaveUser(User user) {
+        Optional<User> foundUser = userRepository.findFirstByUsername(user.getUsername());
+        return foundUser.orElseGet(() -> userRepository.saveAndFlush(user));
+    }
+
+    @Transactional
+    public void saveUserRoles(Long id, Long roleId) {
+        Long userRoleId = userRepository.getIdUserRoles(id, roleId);
+        if (userRoleId == null) userRepository.saveUserRole(id, roleId);
     }
 }
