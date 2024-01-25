@@ -43,7 +43,7 @@ public class User {
         this.roles = roles;
         this.status = true;
         this.createdAt = LocalDateTime.now();
-        this.blocked = false;
+        this.blocked = true;
     }
 
     public User(String username, String password, Person person){
@@ -52,6 +52,6 @@ public class User {
         this.person = person;
         this.status = true;
         this.createdAt = LocalDateTime.now();
-        this.blocked = false;
+        this.blocked = true;
     }
 }

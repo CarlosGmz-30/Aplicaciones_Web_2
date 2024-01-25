@@ -42,7 +42,7 @@ public class AuthService {
             if (!user.getStatus()){
                 return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "UserNotEnable"), HttpStatus.BAD_REQUEST);
             }
-            if (user.getBlocked()){
+            if (!user.getBlocked()){
                 return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "UserBlocked"), HttpStatus.BAD_REQUEST);
             }
             //Esto es para que se ejecute la configuracion del MainSecurity

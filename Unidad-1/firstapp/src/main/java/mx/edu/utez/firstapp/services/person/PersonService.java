@@ -6,6 +6,7 @@ import mx.edu.utez.firstapp.models.person.PersonRepository;
 import mx.edu.utez.firstapp.models.role.Role;
 import mx.edu.utez.firstapp.models.user.User;
 import mx.edu.utez.firstapp.models.user.UserRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,15 +33,20 @@ public class PersonService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<ApiResponse> getAll(){
+    public ResponseEntity<ApiResponse> getAll() {
         return new ResponseEntity<>(new ApiResponse(repository.findAll(), HttpStatus.OK), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity<ApiResponse> getAllPagination(String searchParam, Pageable pageable) {
+        return new ResponseEntity<>(new ApiResponse(repository.findByNameContainingIgnoreCaseOrSurnameContainingIgnoreCaseOrCurpContainingIgnoreCase(searchParam, searchParam, searchParam, pageable), HttpStatus.OK), HttpStatus.OK);
     }
 
     //Flush = Guarda directamente en la base de datos
     @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<ApiResponse> save(Person person){
+    public ResponseEntity<ApiResponse> save(Person person) {
         Optional<Person> foundPerson = repository.findByCurp(person.getCurp());
-        if (foundPerson.isPresent()){
+        if (foundPerson.isPresent()) {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "RecordAlreadyExist"), HttpStatus.BAD_REQUEST);
         }
         if (person.getUser() != null) {
@@ -65,5 +71,17 @@ public class PersonService {
             person = repository.saveAndFlush(person);
         }
         return new ResponseEntity<>(new ApiResponse(person, HttpStatus.OK), HttpStatus.OK);
+    }
+
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> update(Person person) {
+        Optional<Person> foundPerson = repository.findById(person.getId());
+        if (foundPerson.isEmpty())
+            return new ResponseEntity<>(
+                    new ApiResponse(HttpStatus.NOT_FOUND, true, "NotDataFound"),
+                    HttpStatus.BAD_REQUEST
+            );
+        Optional<Person> existingCurp = repository.findByCurpAndIdNot(person.getCurp(), person.getId());
+        return null;
     }
 }
