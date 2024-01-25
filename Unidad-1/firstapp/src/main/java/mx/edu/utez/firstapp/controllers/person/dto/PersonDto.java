@@ -16,14 +16,13 @@ public class PersonDto {
     private String name;
     private String surname;
     private String lastname;
-    private String curp;
     private LocalDate birthDate;
+    private String curp;
     private UserDto user;
 
-    public Person toEntity() {
-        if (user != null) {
+    public Person toEntity(){
+        if (user!=null)
             return new Person(name, surname, lastname, birthDate, curp, user.toEntity());
-        }
         return new Person(name, surname, lastname, birthDate, curp);
     }
 }

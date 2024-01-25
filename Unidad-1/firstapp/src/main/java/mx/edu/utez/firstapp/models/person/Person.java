@@ -26,7 +26,7 @@ public class Person {
     @Column(length = 40)
     private String lastname;
     @Column(columnDefinition = "DATE", nullable = false)
-    private LocalDate birthdate;
+    private LocalDate birthDate;
     @Column(length = 18, nullable = false, unique = true)
     private String curp;
     @Column(columnDefinition = "TIMESTAMP DEFAULT NOW()", insertable = false)
@@ -40,24 +40,20 @@ public class Person {
     @JsonIgnoreProperties(value = {"person"})
     private User user;
 
-    public Person(String name, String surname, String lastname, LocalDate birthdate, String curp) {
+    public Person(String name, String surname, String lastname, LocalDate birthDate, String curp) {
         this.name = name;
         this.surname = surname;
         this.lastname = lastname;
-        this.birthdate = birthdate;
+        this.birthDate = birthDate;
         this.curp = curp;
     }
 
-    public Person(String name, String surname, String lastname, LocalDate birthdate, String curp, User user) {
+    public Person(String name, String surname, String lastname, LocalDate birthDate, String curp, User user) {
         this.name = name;
         this.surname = surname;
         this.lastname = lastname;
-        this.birthdate = birthdate;
+        this.birthDate = birthDate;
         this.curp = curp;
         this.user = user;
-        this.status = true;
-        this.createdAt = LocalDateTime.now();
     }
-
-
 }

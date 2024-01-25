@@ -19,7 +19,6 @@ public class UserService {
         this.repository = repository;
     }
 
-
     @Transactional(readOnly = true)
     public Optional<User> findUserByUsername(String username){
         return repository.findFirstByUsername(username);

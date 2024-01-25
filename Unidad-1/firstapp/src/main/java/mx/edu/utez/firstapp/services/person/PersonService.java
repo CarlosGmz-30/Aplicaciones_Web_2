@@ -9,7 +9,6 @@ import mx.edu.utez.firstapp.models.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +21,9 @@ import java.util.Set;
 public class PersonService {
     private final PersonRepository repository;
     private final UserRepository userRepository;
+
     private final PasswordEncoder encoder;
+
 
     public PersonService(PersonRepository repository, UserRepository userRepository, PasswordEncoder encoder) {
         this.repository = repository;
@@ -31,15 +32,16 @@ public class PersonService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<ApiResponse> getAll() {
+    public ResponseEntity<ApiResponse> getAll(){
         return new ResponseEntity<>(new ApiResponse(repository.findAll(), HttpStatus.OK), HttpStatus.OK);
     }
 
+    //Flush = Guarda directamente en la base de datos
     @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<ApiResponse> save(Person person) {
+    public ResponseEntity<ApiResponse> save(Person person){
         Optional<Person> foundPerson = repository.findByCurp(person.getCurp());
-        if (foundPerson.isPresent()) {
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "RecordAlredyExist"), HttpStatus.BAD_REQUEST);
+        if (foundPerson.isPresent()){
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "RecordAlreadyExist"), HttpStatus.BAD_REQUEST);
         }
         if (person.getUser() != null) {
             person.getUser().setPassword(
@@ -47,25 +49,21 @@ public class PersonService {
             );
             person.getUser().setPerson(person);
             Optional<User> foundUser = userRepository.findFirstByUsername(person.getUser().getUsername());
-            if (foundUser.isPresent())
-                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true,
-                        "RecordAlredyExist"), HttpStatus.BAD_REQUEST);
+            if (foundUser.isPresent()) {
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,
+                        true, "RecordAlreadyExist"), HttpStatus.BAD_REQUEST);
+            }
             Set<Role> roles = person.getUser().getRoles();
             person.getUser().setRoles(null);
             person = repository.saveAndFlush(person);
             for (Role role : roles) {
                 if (userRepository.saveUserRole(person.getUser().getId(), role.getId()) <= 0) {
-                    return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true,
-                            "RoleNotAttached"), HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "RoleNotAttached"), HttpStatus.BAD_REQUEST);
                 }
             }
         } else {
             person = repository.saveAndFlush(person);
         }
-        return new ResponseEntity<>(new ApiResponse
-                (person, HttpStatus.OK), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(person, HttpStatus.OK), HttpStatus.OK);
     }
 }
-
-
-

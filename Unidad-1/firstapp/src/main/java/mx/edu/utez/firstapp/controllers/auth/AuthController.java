@@ -1,5 +1,6 @@
 package mx.edu.utez.firstapp.controllers.auth;
 
+import jakarta.validation.Valid;
 import mx.edu.utez.firstapp.config.ApiResponse;
 import mx.edu.utez.firstapp.controllers.auth.dto.SignDto;
 import mx.edu.utez.firstapp.services.auth.AuthService;
@@ -15,9 +16,8 @@ public class AuthController {
     public AuthController(AuthService service) {
         this.service = service;
     }
-
     @PostMapping("/")
-    public ResponseEntity<ApiResponse> signIn(@RequestBody SignDto dto) {
+    public ResponseEntity<ApiResponse> signIn(@RequestBody SignDto dto){
         return service.signIn(dto.getUsername(), dto.getPassword());
     }
 }

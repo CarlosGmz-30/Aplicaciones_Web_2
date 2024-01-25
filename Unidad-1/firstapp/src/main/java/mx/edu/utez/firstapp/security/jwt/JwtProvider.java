@@ -1,4 +1,4 @@
-package mx.edu.utez.firstapp.security.jxt;
+package mx.edu.utez.firstapp.security.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -18,16 +18,17 @@ import java.util.Date;
 @Service
 public class JwtProvider {
     private final Logger LOGGER = LoggerFactory.getLogger(JwtProvider.class);
-    @Value("${jwt.secret}")
+    @Value("{jwt.secret}")
     private String secret;
     @Value("${jwt.expiration}")
     private long expiration;
-    private final String HEADER = "Authetication";
+    private final String HEADER = "Authentication";
     private final String TOKEN_TYPE = "Bearer ";
 
-    public String genereteToken(Authentication auth) {
+    public String generateToken(Authentication auth){
         UserDetails user = (UserDetails) auth.getPrincipal();
-        Claims claims = (Claims) Jwts.claims().setSubject(user.getUsername());
+        // claims -> Payload -> Pueden poner cualquier propiedad con su respectivo valor
+        Claims claims = Jwts.claims().setSubject(user.getUsername());
         claims.put("roles", user.getAuthorities());
         Date tokenCreateTime = new Date();
         Date tokenValidity = new Date(
@@ -40,26 +41,23 @@ public class JwtProvider {
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
-
-    private Key getSignKey() {
-        byte[] keyBytes = Decoders.BASE64URL.decode(secret);
+    private Key getSignKey(){
+        byte[] keyBytes = Decoders.BASE64.decode(secret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-
-    private Claims parseClaims(String token) {
+    private Claims parseClaims(String token){
         return Jwts.parserBuilder()
                 .setSigningKey(getSignKey())
                 .build().parseClaimsJws(token)
                 .getBody();
     }
-
-    public Claims resolveClaims(HttpServletRequest req) {
-        try {
+    public Claims resolveClaims(HttpServletRequest req){
+        try{
             String token = resolveToken(req);
-            if (token != null)
+            if (token!=null)
                 return parseClaims(token);
             return null;
-        } catch (ExpiredJwtException e) {
+        } catch (ExpiredJwtException e){
             req.setAttribute("expired", e.getMessage());
             throw e;
         } catch (Exception e) {
@@ -68,27 +66,27 @@ public class JwtProvider {
         }
     }
 
-    public String resolveToken(HttpServletRequest req) {
-        String bearToken = req.getHeader(HEADER);
-        if (bearToken != null && bearToken.startsWith(TOKEN_TYPE))
-            //.substring(TOKEN_TYPE.lenght());
-            return bearToken.replace(TOKEN_TYPE, "");
+    public String resolveToken(HttpServletRequest req){
+        String bearerToken = req.getHeader(HEADER);
+        if (bearerToken!=null && bearerToken.startsWith(TOKEN_TYPE))
+            //.substring(TOKEN_TYPE.length());
+            return bearerToken.replace(TOKEN_TYPE, "");
         return null;
     }
 
-    public boolean validateClaims(Claims claims, String token) {
+    public boolean validateClaims(Claims claims, String token){
         try {
             parseClaims(token);
             return claims.getExpiration().after(new Date());
         } catch (MalformedJwtException e) {
             LOGGER.error("MalformedToken");
         } catch (UnsupportedJwtException e) {
-            LOGGER.error("UnsupoertedToken");
+            LOGGER.error("UnsupportedToken");
         } catch (ExpiredJwtException e) {
-            LOGGER.error("ExpiredToken");
-        } catch (IllegalArgumentException e) {
+            LOGGER.error("TokenExpired");
+        } catch (IllegalArgumentException e){
             LOGGER.error("BlankToken");
-        } catch (Exception e) {
+        } catch (Exception e){
             LOGGER.error(e.getMessage());
         }
         return false;

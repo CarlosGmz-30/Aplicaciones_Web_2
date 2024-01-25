@@ -8,22 +8,26 @@ import mx.edu.utez.firstapp.models.user.User;
 import mx.edu.utez.firstapp.models.user.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.Set;
 
 @Configuration
 public class InitialConfig implements CommandLineRunner {
     private final RoleRepository roleRepository;
     private final PersonRepository personRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder encoder;
 
-    public InitialConfig(RoleRepository roleRepository, PersonRepository personRepository, UserRepository userRepository) {
+    public InitialConfig(RoleRepository roleRepository, PersonRepository personRepository, UserRepository userRepository, PasswordEncoder encoder) {
         this.roleRepository = roleRepository;
         this.personRepository = personRepository;
         this.userRepository = userRepository;
+        this.encoder = encoder;
     }
 
     //Si sale bien, hace commit. Si sale mal marca error, pero no guarda nada
@@ -33,30 +37,35 @@ public class InitialConfig implements CommandLineRunner {
         Role adminRole = getOrSaveRole(new Role("ADMIN_ROLE"));
         getOrSaveRole(new Role("USER_ROLE"));
         getOrSaveRole(new Role("CLIENT_ROLE"));
-        // Crear un usuario para que puedan iniciar sesión (person, user, user_role)
+        //Crear un usuario para que pueda iniciar sesion (person, user, user_role)
+        Person person = getOrSavePerson(new Person("Leonardo", "Dorantes", "Castañeda", LocalDate.of(2004, 12, 12), "DOCL041212HMSRSNA1"));
+        User user = getOrSaveUser(new User("LeoDoCa", encoder.encode("leo1234"), person));
+        saveUserRoles(user.getId(), adminRole.getId());
     }
 
     @Transactional
-    public Role getOrSaveRole(Role role) {
+    public Role getOrSaveRole(Role role){
         Optional<Role> foundRole = roleRepository.findByName(role.getName());
-        return foundRole.orElseGet(() -> roleRepository.saveAndFlush(role));
+        return foundRole.orElseGet(()->roleRepository.saveAndFlush(role));
     }
 
     @Transactional
-    public Person getOrSavePerson(Person person) {
-        Optional<Person> foundPerson = personRepository.findByCurp(person.getCurp());
-        return foundPerson.orElseGet(() -> personRepository.saveAndFlush(person));
+    public Person getOrSavePerson(Person person){
+        Optional<Person> foundPerson = personRepository.findByName(person.getName());
+        return foundPerson.orElseGet(()->personRepository.saveAndFlush(person));
     }
 
     @Transactional
-    public User getOrSaveUser(User user) {
+    public User getOrSaveUser(User user){
         Optional<User> foundUser = userRepository.findFirstByUsername(user.getUsername());
-        return foundUser.orElseGet(() -> userRepository.saveAndFlush(user));
+        return foundUser.orElseGet(()->userRepository.saveAndFlush(user));
     }
 
     @Transactional
-    public void saveUserRoles(Long id, Long roleId) {
+    public void saveUserRoles(Long id, Long roleId){
         Long userRoleId = userRepository.getIdUserRoles(id, roleId);
-        if (userRoleId == null) userRepository.saveUserRole(id, roleId);
+        if (userRoleId==null)
+            userRepository.saveUserRole(id,roleId);
     }
+
 }

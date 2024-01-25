@@ -7,5 +7,7 @@ import java.util.Optional;
 
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {
-    Optional<Person> findByCurp(String curp);
+Optional<Person> findByCurp(String curp);
+Optional<Person> findByName(String name);
+
 }

@@ -1,6 +1,6 @@
 package mx.edu.utez.firstapp.security;
 
-import mx.edu.utez.firstapp.security.jxt.JwtAuthFilter;
+import mx.edu.utez.firstapp.security.jwt.JwtAuthFilter;
 import mx.edu.utez.firstapp.security.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,52 +27,44 @@ public class MainSecurity {
     private static final String[] WHITE_LIST = {
             "/api/auth/**"
     };
-
     private final UserDetailsServiceImpl service;
-
 
     public MainSecurity(UserDetailsServiceImpl service) {
         this.service = service;
     }
-
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
     @Bean
-    public AuthenticationProvider authenticationProvider() {
+    public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(service);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
-
     @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration configuration
-    ) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-
     @Bean
-    public JwtAuthFilter filter() {
+    public JwtAuthFilter filter(){
         return new JwtAuthFilter();
     }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(reqs -> reqs
-                        .requestMatchers(WHITE_LIST).permitAll()
-                        .requestMatchers("/api/person/**").hasAuthority("ADMIN_ROLE"))
-                .httpBasic(Customizer.withDefaults())
+                        .requestMatchers(WHITE_LIST).permitAll()       //Cualquier url del WHITE_LIST va a estar permitida (sin autorización)
+                        .requestMatchers("/api/person/**").hasAuthority("ADMIN_ROLE")
+                )
+                .httpBasic(Customizer.withDefaults())               //:: Los dos puntos significan "extraer"
                 .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(filter(), UsernamePasswordAuthenticationFilter.class)
-                .logout(logout -> logout.clearAuthentication(true).logoutUrl("/api/auth/logout"));
+                .logout(logout->logout.clearAuthentication(true).logoutUrl("/api/auth/logout"));
         return http.build();
     }
 }

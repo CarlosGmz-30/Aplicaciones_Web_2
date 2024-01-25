@@ -13,18 +13,18 @@ public class UserDetailsImpl implements UserDetails {
     private final String username;
     private final String password;
     private final boolean blocked;
-    private final boolean enable;
+    private final boolean enabled;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(String username, String password, boolean blocked, boolean enable, Collection<? extends GrantedAuthority> authorities) {
+    public UserDetailsImpl(String username, String password, boolean blocked, boolean enabled, Collection<? extends GrantedAuthority> authorities) {
         this.username = username;
         this.password = password;
         this.blocked = blocked;
-        this.enable = enable;
+        this.enabled = enabled;
         this.authorities = authorities;
     }
-
-    public static UserDetailsImpl build(User user) {
+    //Collection es la clase padre de las listas
+    public static UserDetailsImpl build(User user){
         Set<GrantedAuthority> authorities = user.getRoles().stream().map(
                 role -> new SimpleGrantedAuthority(role.getName())
         ).collect(Collectors.toSet());
@@ -32,11 +32,11 @@ public class UserDetailsImpl implements UserDetails {
                 user.getUsername(),
                 user.getPassword(),
                 user.getBlocked(),
-                user.getStatus(),
-                authorities
+                user.getStatus(),authorities
         );
     }
 
+    //Todos estos atributos son un usuario
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
@@ -69,6 +69,6 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enable;
+        return enabled;
     }
 }

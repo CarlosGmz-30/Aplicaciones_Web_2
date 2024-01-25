@@ -46,7 +46,7 @@ public class User {
         this.blocked = false;
     }
 
-    public User(String username, String password, Person person) {
+    public User(String username, String password, Person person){
         this.username = username;
         this.password = password;
         this.person = person;

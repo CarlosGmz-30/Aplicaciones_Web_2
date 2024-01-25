@@ -1,6 +1,7 @@
 package mx.edu.utez.firstapp.controllers.auth.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
