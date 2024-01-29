@@ -29,6 +29,6 @@ public class LibroBean {
     private String category;
     @Column(name = "publication_date", nullable = false)
     private String publication_date;
-    // @Column(name = "folio")
-    // private String folio;
+    @Column(name = "folio", nullable = false, unique = true)
+    private String folio;
 }
