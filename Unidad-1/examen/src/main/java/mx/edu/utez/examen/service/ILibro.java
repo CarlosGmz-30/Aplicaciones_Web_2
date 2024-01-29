@@ -11,6 +11,8 @@ public interface ILibro {
 
     LibroBean findById(Integer id);
 
+    LibroBean findByInvoice(String Invoice);
+
     void delete(LibroBean libro);
 
     @Transactional(readOnly = true)
