@@ -19,4 +19,5 @@ public class DtoLibro {
     private Long page_number;
     private String category;
     private String publication_date;
+    private String folio;
 }

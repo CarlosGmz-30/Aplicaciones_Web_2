@@ -11,7 +11,7 @@ public interface ILibro {
 
     LibroBean findById(Integer id);
 
-    LibroBean findByInvoice(String Invoice);
+    // LibroBean findByFolio(String Folio);
 
     void delete(LibroBean libro);
 
