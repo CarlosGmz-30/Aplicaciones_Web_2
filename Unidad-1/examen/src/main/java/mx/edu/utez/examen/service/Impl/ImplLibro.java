@@ -23,8 +23,8 @@ public class ImplLibro implements ILibro {
         char primeraLetraTitulo = dtoLibro.getName().charAt(0);
         char primeraLetraAutor = dtoLibro.getAuthor().charAt(0);
         String apellidoAutor = dtoLibro.getAuthor().substring(1);
-        String dosLetrasApellido = apellidoAutor.length() >= 2 ? apellidoAutor.substring(0, 2) : apellidoAutor;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String dosLetrasApellido =(apellidoAutor.length() >= 2 ? apellidoAutor.substring(1, 3) : apellidoAutor).toUpperCase();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         String fechaPublicacion = dateFormat.format(Date.parse(dtoLibro.getPublication_date()));
         String cuatroLetrasISBN = dtoLibro.getISBN().length() >= 4 ? dtoLibro.getISBN().substring(0, 4) : dtoLibro.getISBN();
         Random random = new Random();
