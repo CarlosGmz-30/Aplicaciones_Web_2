@@ -3,7 +3,8 @@ import AuthContext from "./config/context/auth-context";
 import { authManager } from "./config/context/auth-manager";
 import AppRouter from "./router/AppRouter";
 import "./output.css";
-import "./assets/css/AppRouter.css";
+import "./assets/css/SignInPage.css";
+import "./assets/css/Background.css";
 
 const init = () => {
   return JSON.parse(localStorage.getItem("user"));
