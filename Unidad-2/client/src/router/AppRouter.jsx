@@ -8,6 +8,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
+import AdminLayout from "../components/layout/AdminLayout";
 
 const AppRouter = () => {
   const { user } = useContext(AuthContext);
@@ -17,7 +18,7 @@ const AppRouter = () => {
         {
           user.signed ?
             <>
-              <Route path="/" element={<>Admin Layout</>}>
+              <Route path="/" element={<AdminLayout />}>
                 <Route path="dashboard" element={<>Dashboard</>} />
                 <Route path="user" element={<>Dashboard</>} />
                 <Route path="products" element={<>Dashboard</>} />
