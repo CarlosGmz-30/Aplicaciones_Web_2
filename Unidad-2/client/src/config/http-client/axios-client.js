@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 // http://localhost:8080/api [URL del back]
-const SERVER_URL = import.meta.VITE_APP_SERVER_URL;
-const APP_JSON = "aplication/json";
+const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
+const APP_JSON = "application/json";
 
 const AxiosClient = axios.create({
     baseURL: SERVER_URL,

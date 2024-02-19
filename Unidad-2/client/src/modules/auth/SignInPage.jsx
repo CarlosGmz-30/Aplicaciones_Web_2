@@ -23,7 +23,7 @@ export const SignInPage = () => {
     onSubmit: async (values, { setSubmitting }) => {
       console.log(values);
       try {
-        const reponse = await AxiosClient({
+        const response = await AxiosClient({
           url: "/auth/signin",
           method: "POST",
           data: values,
@@ -34,9 +34,10 @@ export const SignInPage = () => {
                 -> Redireccionarlo a su página principal
             */
           dispatch({ type: "SIGNIN", payload: response.data });
-          navigate("/admin", { replace: true });
+          navigate("/", { replace: true });
         } else throw Error("Error");
       } catch (error) {
+        console.log(error)
         customAlert(
           "Iniciar sesión",
           "Usuario y/o contraseña incorrectos",
@@ -54,8 +55,14 @@ export const SignInPage = () => {
         <div className="circle xxlarge shade1"></div>
         <div className="circle xlarge shade2"></div>
         <div className="circle large shade3"></div>
-        <div className="circle mediun shade4"></div>
+        <div className="circle medium shade4"></div>
         <div className="circle small shade5"></div>
+
+        <div id="circle-right" className='circle-right xxlarge-right shade1'></div>
+        <div id="circle-right" className='circle-right xlarge-right shade2'></div>
+        <div id="circle-right" className='circle-right large-right shade3'></div>
+        <div id="circle-right" className='circle-right medium-right shade4'></div>
+        <div id="circle-right" className='circle-right small-right shade5'></div>
       </div>
 
       <form

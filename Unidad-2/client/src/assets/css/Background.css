@@ -12,28 +12,6 @@ body {
     z-index: -1;
 }
 
-.circle,
-.circle-right {
-    position: fixed;
-    border-radius: 50%;
-    background: #31C48D;
-    animation: ripple 15s infinite;
-    box-shadow: 0px 0px 1px 0px #0891b2;
-}
-
-.small,
-.medium,
-.large,
-.xlarge,
-.xxlarge,
-.small-right,
-.medium-right,
-.large-right,
-.xlarge-right,
-.xxlarge-right {
-    position: absolute;
-}
-
 .small {
     width: 200px;
     height: 200px;
@@ -73,35 +51,35 @@ body {
     width: 200px;
     height: 200px;
     right: -100px;
-    bottom: -100px;
+    top: -100px;
 }
 
 .medium-right {
     width: 400px;
     height: 400px;
     right: -200px;
-    bottom: -200px;
+    top: -200px;
 }
 
 .large-right {
     width: 600px;
     height: 600px;
     right: -300px;
-    bottom: -300px;
+    top: -300px;
 }
 
 .xlarge-right {
     width: 800px;
     height: 800px;
     right: -400px;
-    bottom: -400px;
+    top: -400px;
 }
 
 .xxlarge-right {
     width: 1000px;
     height: 1000px;
     right: -500px;
-    bottom: -500px;
+    top: -500px;
 }
 
 .shade1 {
@@ -124,16 +102,116 @@ body {
     opacity: 0.9;
 }
 
+/*************** ESTILOS RESPONSIVOS ***************/
+
+/* Animacion general */
 @keyframes ripple {
     0% {
         transform: scale(0.8);
     }
 
     50% {
-        transform: scale(1.2);
+        transform: scale(1.1);
     }
 
     100% {
         transform: scale(0.8);
+    }
+}
+
+.circle,
+.circle-right {
+    position: fixed;
+    border-radius: 50%;
+    background: #31C48D;
+    animation: ripple 15s infinite;
+    box-shadow: 0px 0px 1px 0px #139441;
+}
+
+/* Laptop 1240px */
+@keyframes ripple-laptop {
+    0% {
+        transform: scale(0.5);
+    }
+
+    50% {
+        transform: scale(0.8);
+    }
+
+    100% {
+        transform: scale(0.5);
+    }
+}
+
+@media only screen and (max-width: 1241px) {
+
+    .circle,
+    .circle-right {
+        animation: ripple-laptop 15s infinite;
+    }
+}
+
+/* Tablet */
+@keyframes ripple-tablet {
+    0% {
+        transform: scale(0.4);
+    }
+
+    50% {
+        transform: scale(0.7);
+    }
+
+    100% {
+        transform: scale(0.4);
+    }
+}
+
+@media only screen and (max-width: 769px) {
+
+    .circle,
+    .circle-right {
+        animation: ripple-tablet 15s infinite;
+    }
+}
+
+/* Mobil */
+@keyframes ripple-mobil {
+    0% {
+        transform: scale(0.4);
+    }
+
+    50% {
+        transform: scale(0.6);
+    }
+
+    100% {
+        transform: scale(0.4);
+    }
+}
+
+@media only screen and (max-width: 426px) {
+
+    .circle,
+    .circle-right {
+        animation: ripple-mobil 15s infinite;
+    }
+
+    #circle-right {
+        display: none;
+    }
+
+    .ripple-background {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .small,
+    .medium,
+    .large,
+    .xlarge,
+    .xxlarge {
+        left: auto;
+        right: auto;
     }
 }
