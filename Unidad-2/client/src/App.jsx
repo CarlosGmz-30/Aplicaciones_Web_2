@@ -7,7 +7,7 @@ import "./assets/css/SignInPage.css";
 import "./assets/css/Background.css";
 
 const init = () => {
-  return JSON.parse(localStorage.getItem("user"));
+  return JSON.parse(localStorage.getItem("user")) || { signed: false };
 };
 
 function App() {

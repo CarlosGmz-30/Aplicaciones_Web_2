@@ -1,9 +1,10 @@
 // Navegar entre componentes por medio de URL
-import React from "react";
+import React, { useContext } from "react";
 import { SignInPage } from "../modules/auth/SignInPage";
 import AuthContext from "../config/context/auth-context";
 import {
   Route,
+  RouterProvider,
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
@@ -26,9 +27,8 @@ const AppRouter = () => {
         }
         <Route path="/" element={<>404 not found</>} />
       </>
-    ));
-  return;
-  <></>;
+    )
+  );
+  return <RouterProvider router={router} />;
 };
-
 export default AppRouter;
