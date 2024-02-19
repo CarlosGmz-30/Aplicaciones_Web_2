@@ -18,8 +18,9 @@ public class RoleController {
         this.service = service;
     }
 
-     @GetMapping("/")
+    @GetMapping("/")
     public ResponseEntity<ApiResponse> getAll() {
-        return service.getAll();
+        return service.findAll();
     }
+
 }

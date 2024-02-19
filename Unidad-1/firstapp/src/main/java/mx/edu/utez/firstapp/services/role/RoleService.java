@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 public class RoleService {
     private final RoleRepository repository;
 
@@ -17,7 +16,10 @@ public class RoleService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<ApiResponse> getAll(){
-        return new ResponseEntity<>(new ApiResponse(repository.findAll(), HttpStatus.OK), HttpStatus.OK);
+    public ResponseEntity<ApiResponse> findAll() {
+        return new ResponseEntity<>(
+                new ApiResponse(repository.findAll(), HttpStatus.OK),
+                HttpStatus.OK
+        );
     }
 }

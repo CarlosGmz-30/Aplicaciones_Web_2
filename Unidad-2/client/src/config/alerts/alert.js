@@ -8,7 +8,7 @@ import withReactContent from 'sweetalert2-react-content';
 
 const SweetAlert = withReactContent(Swal);
 
-const customAlert = (title, text, icon) => {
+export const customAlert = (title, text, icon) => {
     return SweetAlert.fire({
         title,
         text,

@@ -12,18 +12,20 @@ import java.util.Set;
 @Entity
 @Table(name = "roles")
 @NoArgsConstructor
-@Getter
 @Setter
+@Getter
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 20, nullable = false, unique = true)
+    @Column(length = 25, nullable = false, unique = true)
     private String name;
     @ManyToMany
-    @JoinTable(name = "user_roles",
-    joinColumns = @JoinColumn(name = "role_id"),
-    inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
     @JsonIgnore
     private Set<User> users;
 

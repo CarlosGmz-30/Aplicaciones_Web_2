@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Button, Checkbox, Label, Spinner, TextInput } from "flowbite-react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import customAlert from "../../config/alerts/alert";
+import { customAlert } from "../../config/alerts/alert";
 import { useNavigate } from "react-router-dom";
 import AxiosClient from "../../config/http-client/axios-client";
 import AuthContext from "../../config/context/auth-context";

@@ -8,15 +8,17 @@ import mx.edu.utez.firstapp.models.user.User;
 
 import java.util.Set;
 
-@Getter
-@Setter
 @NoArgsConstructor
+@Setter
+@Getter
 public class UserDto {
     private Long id;
     private String username;
     private String password;
+    private String avatar;
     private Set<Role> roles;
-    public User toEntity(){
-        return new User(username, password, roles);
+    public User toEntity() {
+        return new User(id, username, password, avatar, roles);
     }
+
 }

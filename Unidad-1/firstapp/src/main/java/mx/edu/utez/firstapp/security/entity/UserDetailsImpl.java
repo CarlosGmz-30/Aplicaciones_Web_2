@@ -1,4 +1,4 @@
-package mx.edu.utez.firstapp.security.model;
+package mx.edu.utez.firstapp.security.entity;
 
 import mx.edu.utez.firstapp.models.user.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,11 +10,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails {
-    private final String username;
-    private final String password;
-    private final boolean blocked;
-    private final boolean enabled;
-    private final Collection<? extends GrantedAuthority> authorities;
+    private String username;
+    private String password;
+    private boolean blocked;
+    private boolean enabled;
+    private Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsImpl(String username, String password, boolean blocked, boolean enabled, Collection<? extends GrantedAuthority> authorities) {
         this.username = username;
@@ -23,25 +23,21 @@ public class UserDetailsImpl implements UserDetails {
         this.enabled = enabled;
         this.authorities = authorities;
     }
-    //Collection es la clase padre de las listas
     public static UserDetailsImpl build(User user){
-        Set<GrantedAuthority> authorities = user.getRoles().stream().map(
-                role -> new SimpleGrantedAuthority(role.getName())
-        ).collect(Collectors.toSet());
+        Set<GrantedAuthority> authorities =
+           user.getRoles().stream()
+           .map(role -> new SimpleGrantedAuthority(role.getName()))
+           .collect(Collectors.toSet());
         return new UserDetailsImpl(
-                user.getUsername(),
-                user.getPassword(),
-                user.getBlocked(),
-                user.getStatus(),authorities
+          user.getUsername(), user.getPassword(),
+          user.getBlocked(), user.getStatus(), authorities
         );
     }
 
-    //Todos estos atributos son un usuario
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
-
     @Override
     public String getPassword() {
         return password;

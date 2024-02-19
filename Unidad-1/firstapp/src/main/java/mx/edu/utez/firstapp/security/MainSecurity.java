@@ -1,9 +1,10 @@
 package mx.edu.utez.firstapp.security;
 
-import mx.edu.utez.firstapp.security.jwt.JwtAuthFilter;
+import mx.edu.utez.firstapp.security.jwt.JwtAuthenticationFilter;
 import mx.edu.utez.firstapp.security.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -24,7 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 public class MainSecurity {
-    private static final String[] WHITE_LIST = {
+    private final String[] WHITE_LIST = {
             "/api/auth/**"
     };
     private final UserDetailsServiceImpl service;
@@ -32,39 +33,47 @@ public class MainSecurity {
     public MainSecurity(UserDetailsServiceImpl service) {
         this.service = service;
     }
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
-    public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(service);
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider dao = new DaoAuthenticationProvider();
+        dao.setUserDetailsService(service);
+        dao.setPasswordEncoder(passwordEncoder());
+        return dao;
     }
+
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration configuration
+    ) throws Exception {
         return configuration.getAuthenticationManager();
     }
+
     @Bean
-    public JwtAuthFilter filter(){
-        return new JwtAuthFilter();
+    public JwtAuthenticationFilter filter() {
+        return new JwtAuthenticationFilter();
     }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(reqs -> reqs
-                        .requestMatchers(WHITE_LIST).permitAll()       //Cualquier url del WHITE_LIST va a estar permitida (sin autorización)
-                        .requestMatchers("/api/person/**").hasAuthority("ADMIN_ROLE")
+        http.cors(Customizer.withDefaults()).csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(req ->
+                        req.requestMatchers(WHITE_LIST).permitAll()
+                                .requestMatchers("/api/user/**").hasAuthority("ADMIN_ROLE")
+                                .requestMatchers("/api/person/**").hasAnyAuthority("ADMIN_ROLE", "USER_ROLE")
+                                .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults())               //:: Los dos puntos significan "extraer"
+                .httpBasic(Customizer.withDefaults())
                 .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(filter(), UsernamePasswordAuthenticationFilter.class)
-                .logout(logout->logout.clearAuthentication(true).logoutUrl("/api/auth/logout"));
+                .logout(out -> out.logoutUrl("/api/auth/logout").clearAuthentication(true));
         return http.build();
     }
 }
