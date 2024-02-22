@@ -1,6 +1,7 @@
 package mx.edu.utez.firstapp.services.auth;
 
 import mx.edu.utez.firstapp.config.ApiResponse;
+import mx.edu.utez.firstapp.controllers.auth.dto.SignedDto;
 import mx.edu.utez.firstapp.models.user.User;
 import mx.edu.utez.firstapp.security.jwt.JwtProvider;
 import mx.edu.utez.firstapp.services.user.UserService;
@@ -14,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,12 +52,12 @@ public class AuthService {
             Authentication auth = manager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
             );
-            System.out.println("PASSATUH");
             SecurityContextHolder.getContext().setAuthentication(auth);
             String token = provider.generateToken(auth);
             //SignedDto (token, username, id, fullname, role)
+            SignedDto signedDto = new SignedDto(token, "Bearer", user, user.getRoles().stream().toList());
             return new ResponseEntity<>(
-                    new ApiResponse(token, HttpStatus.OK),
+                    new ApiResponse(signedDto, HttpStatus.OK),
                     HttpStatus.OK
             );
         } catch (Exception e) {

@@ -6,7 +6,7 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 
-import SignInPage from "../modules/auth/SigninPage";
+import SignInPage from "../modules/auth/SignInPage";
 import AuthContext from "../config/context/auth-context";
 import AdminLayout from "../components/layout/AdminLayout";
 
@@ -20,8 +20,8 @@ const AppRouter = () => {
             {" "}
             <Route path="/" element={<AdminLayout />}>
               <Route path="dashboard" element={<> Dashboard </>}></Route>
-              <Route path="users" element={<> Dashboard </>}></Route>
-              <Route path="products" element={<> Dashboard </>}></Route>
+              <Route path="users" element={<> Usuarios </>}></Route>
+              <Route path="products" element={<> Productos </>}></Route>
             </Route>{" "}
           </>
         ) : (

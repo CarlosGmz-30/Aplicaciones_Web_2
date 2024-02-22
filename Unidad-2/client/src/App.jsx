@@ -11,13 +11,18 @@ const init = () => {
 };
 
 function App() {
-  const [user, dispatch] = useReducer(authManager, {} , init);
+  const [user, dispatch] = useReducer(authManager, {}, init);
   useEffect(() => {
-    if (!user) return; 
+    if (!user) return;
     localStorage.setItem('user', JSON.stringify(user));
-  }, []);
+  }, [user]);
+
+  // useEffect -> (callback, dependencies)
+  // dependencies -> [user]
+  // Si hay un cambio en user -> callback se ejecuta nuevamente\
+  
   return (
-    <AuthContext.Provider value={{user, dispatch}}>
+    <AuthContext.Provider value={{ user, dispatch }}>
       <AppRouter />
     </AuthContext.Provider>
   )
