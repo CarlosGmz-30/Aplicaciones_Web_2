@@ -3,10 +3,33 @@ import { Link, Outlet } from "react-router-dom";
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
 import { Sidebar } from 'flowbite-react';
 import { HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser } from 'react-icons/hi';
+import '../../assets/styles/Background.css'
 
 const AdminLayout = () => {
   return (
     <>
+      <div className="ripple-background">
+        <div
+          id="circle-right"
+          className="circle-right xxlarge-right shade1"
+        ></div>
+        <div
+          id="circle-right"
+          className="circle-right xlarge-right shade2"
+        ></div>
+        <div
+          id="circle-right"
+          className="circle-right large-right shade3"
+        ></div>
+        <div
+          id="circle-right"
+          className="circle-right medium-right shade4"
+        ></div>
+        <div
+          id="circle-right"
+          className="circle-right small-right shade5"
+        ></div>
+      </div>
       <header>
         <Navbar fluid rounded style={{ background: '#b3e3d1' }}>
           <Navbar.Brand href="https://flowbite-react.com">
