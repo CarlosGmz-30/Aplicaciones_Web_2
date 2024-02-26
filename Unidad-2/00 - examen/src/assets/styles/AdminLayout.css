@@ -1,0 +1,8 @@
+.linkNav {
+    transition: all 0.3s;
+}
+
+.linkNav:hover {
+    transform: scale(1.1);
+    text-decoration: overline;
+}

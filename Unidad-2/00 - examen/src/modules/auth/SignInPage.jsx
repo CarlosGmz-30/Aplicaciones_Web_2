@@ -88,7 +88,7 @@ function SigninPage() {
           <h1 id="title">INICIAR SESIÓN</h1>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="email1" value="Correo Electrónico:" />
+              <Label id="labelForm" htmlFor="email1" value="Correo Electrónico:" />
             </div>
             <TextInput
               id="email1"
@@ -108,7 +108,7 @@ function SigninPage() {
           </div>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="password1" value="Contraseña:" />
+              <Label id="labelForm" htmlFor="password1" value="Contraseña:" />
             </div>
             <TextInput
               id="password1"
@@ -126,14 +126,9 @@ function SigninPage() {
               placeholder="Contraseña"
             />
           </div>
-          <div className="flex items-center gap-2">
-            <Checkbox id="remember" />
-            <Label htmlFor="remember">Recuérdame</Label>
-          </div>
           <Button
             id="button"
             type="submit"
-            gradientDuoTone="greenToBlue"
             disabled={formik.isSubmitting || !formik.isValid}
           >
             {formik.isSubmitting ? <Spinner /> : <>Iniciar Sesión</>}

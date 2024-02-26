@@ -1,5 +1,5 @@
 body {
-  background: white;
+  background: rgb(49, 49, 49);
 }
 
 .ripple-background {
@@ -123,9 +123,9 @@ body {
 .circle-right {
   position: fixed;
   border-radius: 50%;
-  background: #31c48d;
+  background: #b88e34;
   animation: ripple 15s infinite;
-  box-shadow: 0px 0px 1px 0px #139441;
+  box-shadow: 0px 0px 1px 0px #b88e34;
 }
 
 /* Laptop 1240px */

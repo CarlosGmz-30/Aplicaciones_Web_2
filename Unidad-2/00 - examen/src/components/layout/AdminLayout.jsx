@@ -4,6 +4,7 @@ import { Link, Outlet } from "react-router-dom";
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
 import { Sidebar } from 'flowbite-react';
 import { HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser } from 'react-icons/hi';
+import '../../assets/styles/AdminLayout.css'
 
 const AdminLayout = () => {
   // Método para cerrar sesión
@@ -14,17 +15,14 @@ const AdminLayout = () => {
   return (
     <>
       <header>
-        <Navbar fluid rounded style={{ background: '#b3e3d1' }}>
+        <Navbar fluid rounded style={{ background: '#b88e34' }}>
           <Navbar.Brand href="https://flowbite-react.com">
-            <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white" style={{ color: '#073743' }}>Flowbite React</span>
+            <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white" style={{ color: 'white' }}>Flowbite React</span>
           </Navbar.Brand>
           <div className="flex md:order-2">
             <Dropdown
               arrowIcon={false}
               inline
-              label={
-                <Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded />
-              }
             >
               <Dropdown.Header>
                 <span className="block text-sm">Bonnie Green</span>
@@ -39,13 +37,13 @@ const AdminLayout = () => {
             <Navbar.Toggle />
           </div>
           <Navbar.Collapse>
-            <Navbar.Link href="#" active>
+            <Navbar.Link className="linkNav" href="#" active style={{ color: 'white' }}>
               Home
             </Navbar.Link>
-            <Navbar.Link href="#">About</Navbar.Link>
-            <Navbar.Link href="#">Services</Navbar.Link>
-            <Navbar.Link href="#">Pricing</Navbar.Link>
-            <Navbar.Link href="#">Contact</Navbar.Link>
+            <Navbar.Link className="linkNav" href="#" style={{ color: 'white' }}>About</Navbar.Link>
+            <Navbar.Link className="linkNav" href="#" style={{ color: 'white' }}>Services</Navbar.Link>
+            <Navbar.Link className="linkNav" href="#" style={{ color: 'white' }}>Pricing</Navbar.Link>
+            <Navbar.Link className="linkNav" href="#" style={{ color: 'white' }}>Contact</Navbar.Link>
           </Navbar.Collapse>
         </Navbar>
       </header>
