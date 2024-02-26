@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import AuthContext from '../../config/context/auth-context'
 import { Link, Outlet } from "react-router-dom";
-import { Avatar, Dropdown, Navbar } from 'flowbite-react';
+import { Dropdown, Navbar } from 'flowbite-react';
 import { Sidebar } from 'flowbite-react';
-import { HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser } from 'react-icons/hi';
+import { HiChartPie, HiShoppingBag, HiTable, HiUser } from 'react-icons/hi';
 import '../../assets/styles/AdminLayout.css'
 
 const AdminLayout = () => {
@@ -79,12 +79,6 @@ const AdminLayout = () => {
                     </span>
                   </Link>
                 </li>
-                <Sidebar.Item as={Link} href="users" icon={HiInbox}>
-                  Inbox
-                </Sidebar.Item>
-                <Sidebar.Item href="#" icon={HiArrowSmRight}>
-                  Sign In
-                </Sidebar.Item>
                 <Sidebar.Item href="#" icon={HiTable} onClick={handleLogout}>
                   Sign Up
                 </Sidebar.Item>
